@@ -1,0 +1,7 @@
+{
+  "name": "Anniversary",
+  "country": ["HU"],
+  "domains": ["anniversary"],
+  "render_readme": "true",
+  "iot_class": ["Assumed State"]
+}
