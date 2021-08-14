@@ -58,8 +58,10 @@ anniversaries:
 You may use [Custom button card](https://github.com/custom-cards/button-card) to display information on the upcoming event.
 You may also combine it with conditional card.
 
+Event due in 4 days using default icon:
 ![Event due in 4 days using default icon](https://raw.githubusercontent.com/amaximus/anniversary/main/anniversary1.png)
 
+Multiple events due tomorrow using custom icon:
 ![Multiple events due tomorrow using custom icon](https://raw.githubusercontent.com/amaximus/anniversary/main/anniversary2.png)
 
 ## Thanks
