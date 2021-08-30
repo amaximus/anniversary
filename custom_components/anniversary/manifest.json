@@ -3,9 +3,9 @@
   "name": "Upcoming anniversary",
   "documentation": "https://github.com/amaximus/anniversary",
   "issue_tracker": "https://github.com/amaximus/anniversary/issues",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": [],
   "codeowners": ["@amaximus"],
-  "iot_class": "cloud_polling",
+  "iot_class": "calculated",
   "requirements": []
 }
