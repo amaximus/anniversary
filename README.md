@@ -24,8 +24,8 @@ Define sensor with the following configuration parameters:<br />
 | unit_of_measurement | **Y** | `` | custom text, usually days. You may express it in the language of your choice. |
 ---
 
-Date formats of the defined events have to match date_format parameter, otherwise the event will be ignored and a warning message will be logged.
-Since the events are considered yearly repeating events, does not make sense adding format strings like weekday (%A), time, etc. The date_format parameter refers entirely to this custom integration, do not overcomplicate things, keep it simple. All date_format related exceptions will make that event to get ignored.
+Date formats of the defined events have to match date_format parameter, otherwise the event will be ignored and a warning message will be logged.<br>
+Since the events are considered yearly repeating events, it does not make sense adding format strings like weekday (%A), time, etc. The date_format parameter refers entirely to this custom integration, do not overcomplicate things, keep it simple. All date_format related exceptions will make that event to get ignored.
 
 Configuration parameters for the list of events:
 ---
