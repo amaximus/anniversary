@@ -62,52 +62,47 @@ You may use [Custom button card](https://github.com/custom-cards/button-card) to
 
 You may also combine it with conditional card.
 
-Here is an example:
+Here is an example using custom button card:
 ```
-type: conditional
-conditions:
-  - entity: binary_sensor.event_in_5d
-    state: 'on'
-card:
-  type: custom:button-card
-  size: 30px
-  styles:
-    label:
-      - font-size: 90%
-    card:
-      - height: 80px
-    icon:
-      - color: var(--paper-item-icon-color)
-    grid:
-      - position: relative
-    custom_fields:
-      notification:
-        - background-color: >
-            [[[
-              if (states['sensor.events'].state > 1)
-                return "var(--light-primary-color)";
-              return "var(--accent-color)";
-            ]]]
-        - border-radius: 50%
-        - position: absolute
-        - left: 62%
-        - top: 10%
-        - height: 20px
-        - width: 20px
-        - font-size: 9px
-        - line-height: 20px
+type: custom:button-card
+size: 30px
+styles:
+  label:
+    - font-size: 90%
+  card:
+    - height: 80px
+  icon:
+    - color: var(--paper-item-icon-color)
+  grid:
+    - position: relative
   custom_fields:
-    notification: >
-      [[[ return states['sensor.events'].state ]]]
-  label: >
-    [[[
-      var label = states['sensor.events'].attributes.first_event_name
-      return label.replace("|","<br>");
-    ]]]
-  color_type: icon
-  show_label: true
-  show_name: false
-  entity: sensor.events
+    notification:
+      - background-color: >
+          [[[
+            if (states['sensor.events'].state > 1)
+              return "var(--light-primary-color)";
+            return "var(--accent-color)";
+          ]]]
+      - border-radius: 50%
+      - position: absolute
+      - left: 62%
+      - top: 10%
+      - height: 20px
+      - width: 20px
+      - font-size: 9px
+      - line-height: 20px
+custom_fields:
+  notification: >
+    [[[ return states['sensor.events'].state ]]]
+label: >
+  [[[
+    var label = states['sensor.events'].attributes.first_event_name
+    return label.replace("|","<br>");
+  ]]]
+color_type: icon
+show_label: true
+show_name: false
+entity: sensor.events
 ```
 
 Event due in 4 days using default icon:<br>
