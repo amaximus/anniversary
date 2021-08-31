@@ -128,7 +128,7 @@ class AnniversarySensor(Entity):
 
                         m = re.search('(^\d{1,2}.\d{1,2}$)',self._anniversaries[i]['date'])
                         if m is None: # date contains year as well
-                            first_event_anniversary = int((today_p - anni_date_p).days / 365)
+                            first_event_anniversary = int((today_p - anni_date_p).days / 365) + 1
                         else:
                             first_event_anniversary = None
                     elif ddiff == first_anni and self._multiple:
