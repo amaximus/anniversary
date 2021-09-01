@@ -3,7 +3,7 @@
   "name": "Upcoming anniversary",
   "documentation": "https://github.com/amaximus/anniversary",
   "issue_tracker": "https://github.com/amaximus/anniversary/issues",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "dependencies": [],
   "codeowners": ["@amaximus"],
   "iot_class": "calculated",
