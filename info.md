@@ -40,10 +40,10 @@ Configuration parameters for the list of events:
 The sensor will set attributes like:
 ![Anniversary attributes](https://raw.githubusercontent.com/amaximus/anniversary/main/anniversary3.png)
 
-#### Known issues
+## Known issues
 As populating the events list attribute uses a dictionary, for events whose anniversaries are on the same date only the first one will be added to this attribute.
 
-#### Example
+## Example
 ```
 platform: anniversary
 name: events
