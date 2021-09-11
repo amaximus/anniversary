@@ -19,8 +19,9 @@ Define sensor with the following configuration parameters:<br />
 | :---- | :---- | :------- | :----------- |
 | anniversaries | **Y** | `` | list of events (see below) |
 | date_format | **Y** | `%Y-%m-%d` | date format as per [strftime](https://strftime.org).\n %c and %x formats are not supported. |
-| name | **Y** | `events` | name of the sensor |
+| items | **Y** | `0` | number of upcoming events to add to the events list attribute |
 | multiple | **Y** | `false` | add multiple events when on same date |
+| name | **Y** | `events` | name of the sensor |
 | unit_of_measurement | **Y** | `` | custom text, usually days. You may express it in the language of your choice. |
 ---
 
@@ -38,6 +39,9 @@ Configuration parameters for the list of events:
 
 The sensor will set attributes like:
 ![Anniversary attributes](https://raw.githubusercontent.com/amaximus/anniversary/main/anniversary3.png)
+
+#### Known issues
+As populating the events list attribute uses a dictionary, for events whose anniversaries are on the same date only the first one will be added to this attribute.
 
 #### Example
 ```

@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 import re
 import voluptuous as vol
@@ -16,6 +17,7 @@ _LOGGER = logging.getLogger(__name__)
 CONF_ATTRIBUTION = ""
 CONF_ANNIVERSARIES = "anniversaries"
 CONF_DATE_FORMAT = "date_format"
+CONF_ITEMS = 'items'
 CONF_MULTIPLE = 'multiple'
 CONF_NAME = 'name'
 CONF_UNIT = 'unit_of_measurement'
@@ -23,6 +25,7 @@ CONF_UNIT = 'unit_of_measurement'
 DEFAULT_ANNIVERSARIES = ''
 DEFAULT_DATE_FORMAT = "%Y-%m-%d"
 DEFAULT_ICON = 'mdi:calendar'
+DEFAULT_ITEMS = 0
 DEFAULT_MULTIPLE = 'false'
 DEFAULT_NAME = 'events'
 DEFAULT_UNIT = ''
@@ -31,6 +34,7 @@ SCAN_INTERVAL = timedelta(minutes=5)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_ANNIVERSARIES, default=DEFAULT_ANNIVERSARIES): cv.ensure_list,
     vol.Optional(CONF_DATE_FORMAT, default=DEFAULT_DATE_FORMAT): cv.string,
+    vol.Optional(CONF_ITEMS, default=DEFAULT_ITEMS): cv.string,
     vol.Optional(CONF_MULTIPLE, default=DEFAULT_MULTIPLE): cv.boolean,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
     vol.Optional(CONF_UNIT, default=DEFAULT_UNIT): cv.string,
@@ -68,19 +72,21 @@ def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
     name = config.get(CONF_NAME)
     anniversaries = config.get(CONF_ANNIVERSARIES)
     date_format = config.get(CONF_DATE_FORMAT)
+    items = int(config.get(CONF_ITEMS))
     multiple = config.get(CONF_MULTIPLE)
     unit = config.get(CONF_UNIT)
 
     async_add_devices(
-        [AnniversarySensor(hass, name, anniversaries, date_format, multiple, unit )],update_before_add=True)
+        [AnniversarySensor(hass, name, anniversaries, date_format, multiple, unit, items )],update_before_add=True)
 
 class AnniversarySensor(Entity):
 
-    def __init__(self, hass, name, anniversaries, date_format, multiple, unit):
+    def __init__(self, hass, name, anniversaries, date_format, multiple, unit, items):
         """Initialize the sensor."""
         self._hass = hass
         self._name = name
         self._anniversaries = anniversaries
+        self._items = items
         self._multiple = multiple
         self._unit = unit
         self._state = None
@@ -97,10 +103,15 @@ class AnniversarySensor(Entity):
         first_anni = 367
         first_event_in = 0
         first_event_name = ""
+        event_anniversary = ""
+        event_icon = ""
+        event_on = ""
+        events_list = ""
         first_event_on = ""
         first_event_anniversary = None
         today = datetime.today().strftime(self._date_format)
         today_p = datetime.strptime(today,self._date_format)
+        attr_ext = {}
 
         for i in range(len(self._anniversaries)):
             if 'date' in self._anniversaries[i]:
@@ -115,25 +126,41 @@ class AnniversarySensor(Entity):
                         ddiff += 365
                         next_year = True
 
+                    if next_year:
+                        event_on = str(today_p.year + 1) + "-" + str(anni_date_p.month) + "-" + str(anni_date_p.day)
+                    else:
+                        event_on = this_year
+                    event_on = datetime.strptime(event_on,"%Y-%m-%d").strftime(self._date_format)
+
+                    m = re.search('(^\d{1,2}.\d{1,2}$)',self._anniversaries[i]['date'])
+                    if m is None: # date contains year as well
+                        event_anniversary = int(today_p.year - anni_date_p.year)
+                    else:
+                        event_anniversary = None
+
                     if ddiff < first_anni:
                         first_anni = ddiff
                         if 'event' in self._anniversaries[i]:
                             first_event_name = self._anniversaries[i]['event']
 
-                        if next_year:
-                            first_event_on = str(today_p.year + 1) + "-" + str(anni_date_p.month) + "-" + str(anni_date_p.day)
-                        else:
-                            first_event_on = this_year
-                        first_event_on = datetime.strptime(first_event_on,"%Y-%m-%d").strftime(self._date_format)
+                        first_event_on = event_on
 
-                        m = re.search('(^\d{1,2}.\d{1,2}$)',self._anniversaries[i]['date'])
-                        if m is None: # date contains year as well
-                            first_event_anniversary = int(today_p.year - anni_date_p.year)
-                        else:
-                            first_event_anniversary = None
+                        first_event_anniversary = event_anniversary
                     elif ddiff == first_anni and self._multiple:
                         if 'event' in self._anniversaries[i]:
                             first_event_name += "|" + self._anniversaries[i]['event']
+
+                    if ddiff not in attr_ext and self._items > 0:
+                        if 'icon' in self._anniversaries[i]:
+                            event_icon = self._anniversaries[i]['icon']
+                        else:
+                            event_icon = DEFAULT_ICON
+
+                        attr_ext[ddiff] = "{ \"event\":\"" + self._anniversaries[i]['event'] + \
+                            "\", \"event_in\":\"" + str(ddiff) + \
+                            "\", \"event_on\":\"" + event_on + \
+                            "\", \"anniversary\":\"" + str(event_anniversary) + \
+                            "\", \"icon\":\"" + event_icon + "\"}"
 
         if self._unit != "":
             attr["unit_of_measurement"] = self._unit
@@ -142,6 +169,13 @@ class AnniversarySensor(Entity):
         attr["first_event_on"] = first_event_on
         if first_event_anniversary is not None:
             attr["anniversary"] = first_event_anniversary
+
+        if self._items > 0:
+            events_list = "["
+            for key,value in sorted(attr_ext.items())[:self._items]:
+                events_list = events_list + value + ","
+            events_list = events_list[:-1] + "]"
+            attr["events"] = json.loads(events_list)
 
         return attr
 
