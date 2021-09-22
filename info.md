@@ -35,6 +35,7 @@ Configuration parameters for the list of events:
 | event | **Y** | `` | name of the event |
 | date | **Y** | `` | date of the event. It can contain year information in which case the anniversary attribute will be the number of years passed till the next occurence. |
 | icon | **Y** | `mdi:calendar` | icon of the event |
+| type | **Y** | `event` | your text choice to denote the event type. Might be useful for templating. |
 ---
 
 The sensor will set attributes like:

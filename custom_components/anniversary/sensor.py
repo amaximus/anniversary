@@ -28,6 +28,7 @@ DEFAULT_ICON = 'mdi:calendar'
 DEFAULT_ITEMS = 0
 DEFAULT_MULTIPLE = 'false'
 DEFAULT_NAME = 'events'
+DEFAULT_TYPE = 'event'
 DEFAULT_UNIT = ''
 
 SCAN_INTERVAL = timedelta(minutes=5)
@@ -156,10 +157,16 @@ class AnniversarySensor(Entity):
                         else:
                             event_icon = DEFAULT_ICON
 
+                        if 'type' in self._anniversaries[i]:
+                            event_type = self._anniversaries[i]['type']
+                        else:
+                            event_type = DEFAULT_TYPE
+
                         attr_ext[ddiff] = "{ \"event\":\"" + self._anniversaries[i]['event'] + \
                             "\", \"event_in\":\"" + str(ddiff) + \
                             "\", \"event_on\":\"" + event_on + \
                             "\", \"anniversary\":\"" + str(event_anniversary) + \
+                            "\", \"type\":\"" + event_type + \
                             "\", \"icon\":\"" + event_icon + "\"}"
 
         if self._unit != "":
