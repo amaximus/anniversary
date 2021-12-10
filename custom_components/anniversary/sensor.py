@@ -99,7 +99,7 @@ class AnniversarySensor(Entity):
              self._date_format = DEFAULT_DATE_FORMAT
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         attr = {}
         first_anni = 367
         first_event_in = 0
@@ -135,7 +135,10 @@ class AnniversarySensor(Entity):
 
                     m = re.search('(^\d{1,2}.\d{1,2}$)',self._anniversaries[i]['date'])
                     if m is None: # date contains year as well
-                        event_anniversary = int(today_p.year - anni_date_p.year)
+                        if next_year:
+                            event_anniversary = int(today_p.year - anni_date_p.year + 1)
+                        else:
+                            event_anniversary = int(today_p.year - anni_date_p.year)
                     else:
                         event_anniversary = None
 
