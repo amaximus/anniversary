@@ -5,7 +5,7 @@
 # Anniversary sensor for upcoming events for Home Assistant
 
 The state of the sensor will be the number of days till the first upcoming event from the sensor's defined list.
-Other related information (icon, event name, anniversary, etc.) will be added as attributes.
+Other related information (sorted list of all events, closest event's icon, event name and anniversary, etc.) will be added as attributes.
 
 #### Installation
 The easiest way to install it is through [HACS (Home Assistant Community Store)](https://github.com/hacs/integration),
@@ -20,7 +20,7 @@ Define sensor with the following configuration parameters:<br />
 | anniversaries | **Y** | `` | list of events (see below) |
 | date_format | **Y** | `%Y-%m-%d` | date format as per [strftime](https://strftime.org).\n %c and %x formats are not supported. |
 | items | **Y** | `0` | number of upcoming events to add to the events list attribute |
-| multiple | **Y** | `false` | add multiple events when on same date |
+| multiple | **Y** | `false` | add multiple events when on same date - obsoleted. It will get removed in the next release |
 | name | **Y** | `events` | name of the sensor |
 | unit_of_measurement | **Y** | `` | custom text, usually days. You may express it in the language of your choice. |
 ---
@@ -40,9 +40,6 @@ Configuration parameters for the list of events:
 
 The sensor will set attributes like:
 ![Anniversary attributes](https://raw.githubusercontent.com/amaximus/anniversary/main/anniversary3.png)
-
-## Known issues
-As populating the events list attribute uses a dictionary, for events whose anniversaries are on the same date only the first one will be added to this attribute.
 
 ## Example
 ```
