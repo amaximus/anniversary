@@ -9,7 +9,7 @@ Other related information (sorted list of all events, closest event's icon, even
 
 #### Installation
 The easiest way to install it is through [HACS (Home Assistant Community Store)](https://github.com/hacs/integration),
-search for <i>Upcoming anniversary</i> in the Integrations.<br />
+search for <i>Anniversary</i> in the Integrations.<br />
 
 #### Configuration:
 Define sensor with the following configuration parameters:<br />
