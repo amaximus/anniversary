@@ -76,11 +76,32 @@ async def async_setup_platform(hass, config, async_add_devices, discovery_info=N
     unit = config.get(CONF_UNIT)
 
     async_add_devices(
-        [AnniversarySensor(hass, name, anniversaries, date_format, multiple, unit, items )],update_before_add=True)
+        [
+             AnniversarySensor(
+                 hass,
+                 name,
+                 anniversaries,
+                 date_format,
+                 multiple,
+                 unit,
+                items
+             )
+        ],
+        update_before_add=True
+    )
 
 class AnniversarySensor(Entity):
 
-    def __init__(self, hass, name, anniversaries, date_format, multiple, unit, items):
+    def __init__(
+        self,
+        hass,
+        name,
+        anniversaries,
+        date_format,
+        multiple,
+        unit,
+        items
+    ):
         """Initialize the sensor."""
         self._hass = hass
         self._name = name
@@ -152,7 +173,11 @@ class AnniversarySensor(Entity):
 
                     attr["events"].append(attr_ext1)
 
-        events_sorted['events'] = sorted(attr["events"], key=lambda k: int(k['event_in']), reverse=False)
+        events_sorted['events'] = sorted(
+            attr["events"],
+            key=lambda k: int(k['event_in']),
+            reverse=False
+        )
         attr["events"] = events_sorted['events']
 
         if self._unit != "":
